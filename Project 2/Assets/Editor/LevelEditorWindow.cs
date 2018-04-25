@@ -29,14 +29,15 @@ public class LevelEditorWindow : EditorWindow {
         GUILayout.Label("Object Name: ", GUILayout.MaxWidth(90));
         objectSearch = GUILayout.TextField(objectSearch, 25);
         GUILayout.EndHorizontal();
+        int selectionIndex = 0;
+        string[] objectGuids;
         //
         if (GUILayout.Button("Search Object!"))
         {
-			int popupIndex = 0;
-            string[] objectGuids = AssetDatabase.FindAssets(objectSearch);
 
-            EditorWindow popup = GetWindow(typeof(EditorGUILayout));
-            popup.Show();
+            objectGuids = AssetDatabase.FindAssets(objectSearch);
+            selectionIndex = EditorGUILayout.Popup("Search Results: ", selectionIndex, objectGuids);
+
             StringBuilder guidBuilder = new StringBuilder();
             foreach (string objectGuid in objectGuids)
             {
@@ -47,10 +48,10 @@ public class LevelEditorWindow : EditorWindow {
             {
                 Debug.Log("ObjectGuids is greater than 0");
                 EditorGUILayout.Space();
-				popupIndex = EditorGUILayout.Popup (popupIndex, objectGuids);
+				selectionIndex = EditorGUILayout.Popup (selectionIndex, objectGuids);
 
 				//Selected Object = array value of objectGuids.  Change 0 to listbox item!
-				string trueObjectGuid = objectGuids[popupIndex];
+				string trueObjectGuid = objectGuids[selectionIndex];
 				//string trueObjectGuid = objectGuids[0];
 
                 //Get the asset's path from the GUID.
@@ -61,7 +62,7 @@ public class LevelEditorWindow : EditorWindow {
 					
 					//3 Fetch the object itself
 					GameObject objectTemplate = AssetDatabase.LoadAssetAtPath (assetPath, typeof(GameObject)) as GameObject;
-
+                    Debug.Log("Attempting to Creat Object");
 					GameObject newObject = GameObject.Instantiate (objectTemplate);
 					newObject.name = objectTemplate.name;
 				}
@@ -73,5 +74,6 @@ public class LevelEditorWindow : EditorWindow {
                 //currentX += 1f;
             }
         }
+
     }
 }
