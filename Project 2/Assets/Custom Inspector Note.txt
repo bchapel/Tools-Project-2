@@ -1,4 +1,0 @@
-Create a physics material called "Default".
-
-If custom inspector value is changed to something NOT the default value, and current physics material is default create a new physics material.
-If physics material is changed to default value, and name is not default, delete current material and change to default.

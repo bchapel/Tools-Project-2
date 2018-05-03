@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class physicsInspector : MonoBehaviour {
 
+    public float bounciness;
+
 	// Use this for initialization
 	void Start () {
 		

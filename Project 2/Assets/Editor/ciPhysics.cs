@@ -12,30 +12,31 @@ public class ciPhysics : Editor
     private GameObject selectedObj;
 
     //Fix objBounciness - it resets (when it shouldn't) every time an object is selecvted a second time.
-    private float objBounciness = 0f;
+    private float objBounciness;
+
 
     public override void OnInspectorGUI()
     {
+        selectedObj = Selection.activeGameObject;
+        objBounciness = selectedObj.GetComponent<physicsInspector>().bounciness;
         //Float that user manipulates.
         objBounciness = EditorGUILayout.FloatField("Bounciness: ", objBounciness);
-        selectedObj = Selection.activeGameObject;
-        Debug.Log("Game Object: " + selectedObj);
-        //objBounciness = bounciness;
-        //base.OnInspectorGUI();
+        selectedObj.GetComponent<physicsInspector>().bounciness = objBounciness;
+
 
         //Shortcut for referring to the physics material of the object.
         PhysicsMaterial2D mat = selectedObj.GetComponent<Collider2D>().sharedMaterial;
-        Debug.Log("Physics Material Name: " + mat.name);
+        //Debug.Log("Physics Material Name: " + mat.name);
 
         //Check if Mat's name IS the default material.
         if (objBounciness != defaultBounciness && mat.name == defaultMat)
         { 
-
+          
 
             PhysicsMaterial2D mat2 = new PhysicsMaterial2D(selectedObj.name);
             AssetDatabase.CreateAsset(mat2, "Assets/Resources/Materials/Physics/" + mat2.name + ".physicsMaterial2D");
             selectedObj.GetComponent<Collider2D>().sharedMaterial = mat2;
-            Debug.Log(AssetDatabase.GetAssetPath(mat2));
+            //Debug.Log(AssetDatabase.GetAssetPath(mat2));
             mat2.bounciness = objBounciness;
             
         }

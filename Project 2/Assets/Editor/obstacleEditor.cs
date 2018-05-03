@@ -14,19 +14,32 @@ public class obstacleEditor : Editor  {
     {
         serStartPos = this.serializedObject.FindProperty("startPos");
         serEndPos = this.serializedObject.FindProperty("endPos");
-        thisObj = (GameObject) this.serializedObject.targetObject;
+        thisObj = Selection.activeGameObject;
+
+        //thisObj.transform.root
+
+        //serStartPos.vector3Value = thisObj.transform.position;
+        //Debug.Log(serStartPos);
+        //serStartPos.vector3Value.x = thisObj.transform.position.x - defaultDistance;
+        //serEndPos.vector3Value = thisObj.transform.position;
+        //Debug.Log(serEndPos);
+        //serEndPos.x = go.transform.position.x + defaultDistance;
     }
+
+
+    [ExecuteInEditMode]
 
 
     public override void OnInspectorGUI()
     {
 
-        serStartPos.vector3Value = thisObj.transform.position;
-        Debug.Log(serStartPos);
-        //serStartPos.vector3Value.x = thisObj.transform.position.x - defaultDistance;
-        serEndPos.vector3Value = thisObj.transform.position;
-        Debug.Log(serEndPos);
-        //serEndPos.x = go.transform.position.x + defaultDistance;
         base.OnInspectorGUI();
     }
 }
+
+
+
+//  USE LOCAL POSITION CHANGES TO MANIPULATE TRACK DISTANCE!!! 
+//(IE: startPos transform.localPosition = new Vector3(trackDistance, 0, 0);
+//      endPos transform.localPosition = new Vector3(-trackDistance, 0 0);
+//
