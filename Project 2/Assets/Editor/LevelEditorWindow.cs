@@ -29,72 +29,21 @@ public class LevelEditorWindow : EditorWindow
         if (GUILayout.Button("Create Obstacle"))
         
         {
-
+            GameObject obstacle = Instantiate(Resources.Load("Prefabs/obstacleHolder", typeof(GameObject))) as GameObject;
+            obstacle.transform.position = new Vector3(0, 0, 0);
         }
 
         if (GUILayout.Button("Create Target!"))
         {
-
+            GameObject target = Instantiate(Resources.Load("Prefabs/Target", typeof(GameObject))) as GameObject;
+            target.transform.position = new Vector3(0, 0, 0);
+        }
+        if (GUILayout.Button("Create Crossbow!"))
+        {
+            GameObject crossbow = Instantiate(Resources.Load("Prefabs/Crossbow", typeof(GameObject))) as GameObject;
+            crossbow.transform.position = new Vector3(0, 0, 0);
         }
 
         GUILayout.EndHorizontal();
-        int selectionIndex = 0;
-        string[] objectGuids;
-        //
-
-        //if (GUILayout.Button("Create Obstacle"))
-        //{
-
-        //    //3 Fetch the object itself
-        //    GameObject Obstacle = Resources.Load( as GameObject;
-        //    Debug.Log("Attempting to Creat Object");
-        //    GameObject newObject = GameObject.Instantiate(objectTemplate);
-        //    newObject.name = objectTemplate.name;
-        //}
-
-        if (GUILayout.Button("Search Object!"))
-        {
-
-            objectGuids = AssetDatabase.FindAssets(objectSearch);
-            selectionIndex = EditorGUILayout.Popup("Search Results: ", selectionIndex, objectGuids);
-
-            StringBuilder guidBuilder = new StringBuilder();
-            foreach (string objectGuid in objectGuids)
-            {
-                guidBuilder.AppendLine(objectGuid);
-            }
-            //UnityEngine.MonoBehaviour.print(guidBuilder.ToString());
-            if (objectGuids.Length > 0)
-            {
-                Debug.Log("ObjectGuids is greater than 0");
-                EditorGUILayout.Space();
-                selectionIndex = EditorGUILayout.Popup(selectionIndex, objectGuids);
-
-                //Selected Object = array value of objectGuids.  Change 0 to listbox item!
-                //string trueObjectGuid = objectGuids[selectionIndex];
-                string trueObjectGuid = objectGuids[0];
-
-                //Get the asset's path from the GUID.
-                string assetPath = AssetDatabase.GUIDToAssetPath(trueObjectGuid);
-                UnityEngine.MonoBehaviour.print(assetPath);
-
-                if (GUILayout.Button("Create Object"))
-                {
-
-                    //3 Fetch the object itself
-                    GameObject objectTemplate = AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject)) as GameObject;
-                    Debug.Log("Attempting to Creat Object");
-                    GameObject newObject = GameObject.Instantiate(objectTemplate);
-                    newObject.name = objectTemplate.name;
-                }
-                //Funsies - Spawn in a line along X 
-                //Vector3 newObjectPosition = newObject.transform.position;
-                //newObjectPosition.x = currentX;
-                //newObject.transform.position = newObjectPosition;
-
-                //currentX += 1f;
-            }
-        }
-
     }
 }

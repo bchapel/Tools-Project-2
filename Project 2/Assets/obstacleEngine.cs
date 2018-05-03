@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class obstacleEngine : MonoBehaviour
 {
-
+    [Tooltip("Distance from center of track to track end points.")]
     public float defaultDistance = 3f;
     [HideInInspector]
     public GameObject startPos ;
     [HideInInspector]
     public GameObject endPos;
+    [HideInInspector]
     public float moveSpeed = 2f;
+    [Tooltip("Starting Direction of travel.")]
     public bool startDir;
-    public GameObject go;
 
 
     // Use this for initialization

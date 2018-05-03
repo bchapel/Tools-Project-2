@@ -4,16 +4,20 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(obstacleEngine))]
-public class obstacleEditor : Editor  {
+public class obstacleEditor : Editor
+{
 
     private SerializedProperty serStartPos;
     private SerializedProperty serEndPos;
+    private SerializedProperty serMoveSpeed;
     private GameObject thisObj;
+    public float moveSpeed;
 
     private void OnEnable()
     {
         serStartPos = this.serializedObject.FindProperty("startPos");
         serEndPos = this.serializedObject.FindProperty("endPos");
+        serMoveSpeed = this.serializedObject.FindProperty("moveSpeed");
         thisObj = Selection.activeGameObject;
 
         //thisObj.transform.root
@@ -32,7 +36,18 @@ public class obstacleEditor : Editor  {
 
     public override void OnInspectorGUI()
     {
+        moveSpeed = thisObj.GetComponent<obstacleEngine>().moveSpeed;
+        GUILayout.BeginHorizontal();
+        moveSpeed = EditorGUILayout.FloatField(moveSpeed);
+        thisObj.GetComponent<obstacleEngine>().moveSpeed = moveSpeed;
 
+       if(GUILayout.Button("Update Default Movespeed"))
+        {
+            Debug.Log("Updating default movespeed!");
+            serMoveSpeed = this.serializedObject.FindProperty("moveSpeed");
+            moveSpeed = serMoveSpeed.floatValue;
+        }
+        GUILayout.EndHorizontal();
         base.OnInspectorGUI();
     }
 }
