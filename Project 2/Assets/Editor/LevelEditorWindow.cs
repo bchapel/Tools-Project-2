@@ -10,6 +10,7 @@ public class LevelEditorWindow : EditorWindow
     private static LevelEditorWindow instance;
     //String name of ojbect(s) to search for
     public string objectSearch = "";
+    private float defaultSpeed;
 
     public static void ShowWindow()
     {
@@ -26,11 +27,14 @@ public class LevelEditorWindow : EditorWindow
 
         //Search for object name?
         GUILayout.BeginHorizontal();
+
         if (GUILayout.Button("Create Obstacle"))
         
         {
             GameObject obstacle = Instantiate(Resources.Load("Prefabs/obstacleHolder", typeof(GameObject))) as GameObject;
             obstacle.transform.position = new Vector3(0, 0, 0);
+            obstacle.transform.parent.position = new Vector3(0, 0, 0);
+            obstacle.GetComponent<obstacleEngine>().moveSpeed = defaultSpeed;
         }
 
         if (GUILayout.Button("Create Target!"))
@@ -45,5 +49,7 @@ public class LevelEditorWindow : EditorWindow
         }
 
         GUILayout.EndHorizontal();
+        GUILayout.BeginVertical();
+        defaultSpeed = EditorGUILayout.FloatField("Default Speed", defaultSpeed);
     }
 }
