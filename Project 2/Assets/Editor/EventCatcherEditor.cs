@@ -221,7 +221,7 @@ public class EventCatcherEditor : Editor
                 break;
 
         }
-
+        Repaint();
     }
 
 
