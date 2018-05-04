@@ -28,6 +28,7 @@ public class EventCatcherEditor : Editor
     {
         selectedObj = Selection.activeGameObject;
         Event currentEvent = Event.current;
+
         Transform objTransform = selectedObj.transform;
 
         GameObject parent = selectedObj.transform.parent.gameObject;
@@ -95,6 +96,14 @@ public class EventCatcherEditor : Editor
                             parent.transform.Rotate(Vector3.back * rotationAmount);
                             selectedObj.transform.Rotate(Vector3.forward * rotationAmount);
                             break;
+                        case "MovePath":
+                            parent.transform.GetChild(1).transform.LookAt(parent.transform.GetChild(0));
+                            parent.transform.GetChild(1).transform.localPosition += Vector3.left * movementAmount;
+                            parent.transform.GetChild(2).transform.LookAt(parent.transform.GetChild(0));
+                            parent.transform.GetChild(2).transform.localPosition +=
+                                Vector3.right * movementAmount;
+                            break;
+
                     }
 
                 }
@@ -123,6 +132,13 @@ public class EventCatcherEditor : Editor
                         case "RotateObstacle":
                             parent.transform.Rotate(Vector3.forward * rotationAmount);
                             selectedObj.transform.Rotate(Vector3.back * rotationAmount);
+                            break;
+                        case "MovePath":
+                            parent.transform.GetChild(1).transform.LookAt(parent.transform.GetChild(0));
+                            parent.transform.GetChild(1).transform.localPosition += Vector3.right * movementAmount;
+                            parent.transform.GetChild(2).transform.LookAt(parent.transform.GetChild(0));
+                            parent.transform.GetChild(2).transform.localPosition +=
+                                Vector3.left * movementAmount;
                             break;
                     }
                 }
@@ -218,6 +234,11 @@ public class EventCatcherEditor : Editor
                 {
                     modeSelected = "RotateObstacle";
                 }
+
+                else if (Event.current.keyCode == (KeyCode.I))
+                {
+                    modeSelected = "MovePath";
+                }
                 break;
 
         }
@@ -271,6 +292,11 @@ public class EventCatcherEditor : Editor
             if (GUILayout.Button("Rotate Path (P)", modeSelected == "RotateObstacle" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
             {
                 modeSelected = "RotateObstacle";
+            }
+
+            if (GUILayout.Button("Move Path (I)", modeSelected == "MovePath" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
+            {
+                modeSelected = "MovePath";
             }
         }
         GUILayout.EndHorizontal();

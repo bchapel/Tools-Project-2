@@ -34,12 +34,19 @@ public class LevelEditorWindow : EditorWindow
         if (GUILayout.Button("Create Obstacle"))
 
         {
+
             GameObject obstacle = Instantiate(Resources.Load("Prefabs/obstacleHolder", typeof(GameObject))) as GameObject;
+            GameObject startPos = obstacle.transform.GetChild(1).gameObject;
+            GameObject endPos = obstacle.transform.GetChild(2).gameObject;
             Debug.Log(obstacle);
             obstacle.transform.position = new Vector3(0, 0, 0);
             obstacle.transform.GetChild(0).GetComponent<obstacleEngine>().obstacleDistance = trackLength;
             obstacle.transform.GetChild(0).GetComponent<obstacleEngine>().moveSpeed = defaultSpeed;
             obstacle.name = "Obstacle Holder";
+
+            startPos.transform.position = obstacle.transform.position + new Vector3(trackLength, 0, 0);
+            endPos.transform.position = obstacle.transform.position - new Vector3(trackLength, 0, 0);
+            //startPos.transform.position -= trackLength;
         }
 
         defaultSpeed = EditorGUILayout.FloatField("Default Speed", defaultSpeed);
