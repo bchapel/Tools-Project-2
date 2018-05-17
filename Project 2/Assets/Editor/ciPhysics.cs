@@ -11,7 +11,6 @@ public class ciPhysics : Editor
     private static string defaultMat = "pmatBouncy";
     private GameObject selectedObj;
 
-    //Fix objBounciness - it resets (when it shouldn't) every time an object is selecvted a second time.
     private float objBounciness;
 
 
@@ -21,7 +20,8 @@ public class ciPhysics : Editor
         objBounciness = selectedObj.GetComponent<physicsInspector>().bounciness;
         //Float that user manipulates.
         objBounciness = EditorGUILayout.FloatField("Bounciness: ", objBounciness);
-        selectedObj.GetComponent<physicsInspector>().bounciness = objBounciness;
+        EditorGUILayout.LabelField("Select and overwrite the above float, backspace is non-functional.");
+
 
 
         //Shortcut for referring to the physics material of the object.
@@ -29,6 +29,7 @@ public class ciPhysics : Editor
         //Debug.Log("Physics Material Name: " + mat.name);
 
         //Check if Mat's name IS the default material.
+        //selectedObj.GetComponent<physicsInspector>().bounciness = objBounciness;
         if (objBounciness != defaultBounciness && mat.name == defaultMat)
         { 
           
