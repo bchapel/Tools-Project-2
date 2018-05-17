@@ -26,12 +26,16 @@ public class EventCatcherEditor : Editor
     //This allows user's hotkey presses to give them real-time feedback rather than relying on them clicking back on the menu.
     public void DetectAction()
     {
+        if(Selection.activeObject)
         selectedObj = Selection.activeGameObject;
+
+
+        Debug.Log(selectedObj);
         Event currentEvent = Event.current;
 
         Transform objTransform = selectedObj.transform;
+            GameObject parent = selectedObj.transform.parent.gameObject;
 
-        GameObject parent = selectedObj.transform.parent.gameObject;
 
 
 
@@ -90,7 +94,7 @@ public class EventCatcherEditor : Editor
                             selectedObj.transform.localScale += new Vector3(-scaleAmount, 0, 0);
                             break;
                         case "MoveObstacle":
-                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().endPos.transform.position, selectedObj.GetComponent<obstacleEngine>().moveSpeed);
+                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().endPos.transform.position, selectedObj.GetComponent<obstacleEngine>().moveSpeed / 2);
                             break;
                         case "RotateObstacle":
                             parent.transform.Rotate(Vector3.back * rotationAmount);
@@ -127,7 +131,7 @@ public class EventCatcherEditor : Editor
                             selectedObj.transform.localScale += new Vector3(scaleAmount, 0, 0);
                             break;
                         case "MoveObstacle":
-                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().startPos.transform.position, selectedObj.GetComponent<obstacleEngine>().moveSpeed);
+                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().startPos.transform.position, selectedObj.GetComponent<obstacleEngine>().moveSpeed / 2);
                             break;
                         case "RotateObstacle":
                             parent.transform.Rotate(Vector3.forward * rotationAmount);
@@ -265,16 +269,20 @@ public class EventCatcherEditor : Editor
         if (GUILayout.Button("Move (T)", modeSelected == "MoveObject" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
         {
             modeSelected = "MoveObject";
+
+            //Put movement commands here.
         }
 
         if (GUILayout.Button("Rotate (Y)", modeSelected == "RotateObject" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
         {
             modeSelected = "RotateObject";
+            //Put rotation commands here
         }
 
         if (GUILayout.Button("Scale (R)", modeSelected == "ScaleObject" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
         {
             modeSelected = "ScaleObject";
+            //Put scale commands here
         }
 
         //Debug.Log(modeSelected);
@@ -287,16 +295,19 @@ public class EventCatcherEditor : Editor
             if (GUILayout.Button("Move Obstacle (O)", modeSelected == "MoveObstacle" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
             {
                 modeSelected = "MoveObstacle";
+                //Obstacle Movement Commands here
             }
 
             if (GUILayout.Button("Rotate Path (P)", modeSelected == "RotateObstacle" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
             {
                 modeSelected = "RotateObstacle";
+                //Obstacle Rotation Commands here
             }
 
             if (GUILayout.Button("Move Path (I)", modeSelected == "MovePath" ? ToggleButtonStyleToggled : ToggleButtonStyleNormal))
             {
                 modeSelected = "MovePath";
+                //Obstacle Path movement commands here.
             }
         }
         GUILayout.EndHorizontal();
