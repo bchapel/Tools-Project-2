@@ -5,6 +5,7 @@ using UnityEngine;
 public class obstacleEngine : MonoBehaviour
 {
     [Tooltip("Distance from center of track to track end points.")]
+    [HideInInspector]
     public float obstacleDistance = 3f;
     [HideInInspector]
     public GameObject startPos ;

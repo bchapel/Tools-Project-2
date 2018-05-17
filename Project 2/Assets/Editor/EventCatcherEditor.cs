@@ -11,9 +11,10 @@ public class EventCatcherEditor : Editor
     private static float rotationAmount = 1.0f;
     private static float movementAmount = 0.05f;
     private static float scaleAmount = 0.1f;
-    private static float speedMode = 3f;
-    private static float slowMode = 0.5f;
+    //private static float speedMode = 3f;
+    //private static float slowMode = 0.5f;
     private GameObject selectedObj;
+    private GameObject parent;
 
 
     //Mutually exclusive toggle buttons from here: https://gamedev.stackexchange.com/questions/98920/how-do-i-create-a-toggle-button-in-unity-inspector
@@ -30,11 +31,11 @@ public class EventCatcherEditor : Editor
         selectedObj = Selection.activeGameObject;
 
 
-        Debug.Log(selectedObj);
         Event currentEvent = Event.current;
 
         Transform objTransform = selectedObj.transform;
-            GameObject parent = selectedObj.transform.parent.gameObject;
+        if (selectedObj.transform.parent)
+           parent = selectedObj.transform.parent.gameObject;
 
 
 
@@ -58,11 +59,11 @@ public class EventCatcherEditor : Editor
                     {
                         case "MoveObject":
 
-                            selectedObj.transform.position = selectedObj.transform.position + Vector3.up * movementAmount;
+                            
                             if (selectedObj.CompareTag("Obstacle"))
                             parent.transform.position = parent.transform.position + Vector3.up * movementAmount;
-
-                            //selectedObj.transform.position += 
+                            else
+                                selectedObj.transform.position = selectedObj.transform.position + Vector3.up * movementAmount;
                             break;
 
                         case "RotateObject":
@@ -80,21 +81,22 @@ public class EventCatcherEditor : Editor
                     switch (modeSelected)
                     {
                         case "MoveObject":
-                            selectedObj.transform.position = selectedObj.transform.position + Vector3.left * movementAmount;
+                            
                             if (selectedObj.CompareTag("Obstacle"))
                                 parent.transform.position = parent.transform.position + Vector3.left * movementAmount;
-
+                            else
+                                selectedObj.transform.position = selectedObj.transform.position + Vector3.left * movementAmount;
                             break;
 
                         case "RotateObject":
-                            selectedObj.transform.Rotate(Vector3.left * rotationAmount);
+                            selectedObj.transform.Rotate(Vector3.forward * rotationAmount);
                             break;
 
                         case "ScaleObject":
                             selectedObj.transform.localScale += new Vector3(-scaleAmount, 0, 0);
                             break;
                         case "MoveObstacle":
-                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().endPos.transform.position, selectedObj.GetComponent<obstacleEngine>().moveSpeed / 2);
+                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().endPos.transform.position, movementAmount * 1.3f);
                             break;
                         case "RotateObstacle":
                             parent.transform.Rotate(Vector3.back * rotationAmount);
@@ -118,20 +120,22 @@ public class EventCatcherEditor : Editor
                     switch (modeSelected)
                     {
                         case "MoveObject":
-                            selectedObj.transform.position = selectedObj.transform.position + Vector3.right * movementAmount;
+
                             if (selectedObj.CompareTag("Obstacle"))
                                 parent.transform.position = parent.transform.position + Vector3.right * movementAmount;
+                            else
+                                selectedObj.transform.position = selectedObj.transform.position + Vector3.right * movementAmount;
                             break;
 
                         case "RotateObject":
-                            selectedObj.transform.Rotate(Vector3.right * rotationAmount);
+                            selectedObj.transform.Rotate(Vector3.back * rotationAmount);
                             break;
 
                         case "ScaleObject":
                             selectedObj.transform.localScale += new Vector3(scaleAmount, 0, 0);
                             break;
                         case "MoveObstacle":
-                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().startPos.transform.position, selectedObj.GetComponent<obstacleEngine>().moveSpeed / 2);
+                            selectedObj.transform.position = Vector3.MoveTowards(selectedObj.transform.position, selectedObj.GetComponent<obstacleEngine>().startPos.transform.position, movementAmount * 1.3f);
                             break;
                         case "RotateObstacle":
                             parent.transform.Rotate(Vector3.forward * rotationAmount);
@@ -152,10 +156,11 @@ public class EventCatcherEditor : Editor
                     switch (modeSelected)
                     {
                         case "MoveObject":
-                            selectedObj.transform.position = selectedObj.transform.position + Vector3.down * movementAmount;
+                            
                             if (selectedObj.CompareTag("Obstacle"))
                                 parent.transform.position = parent.transform.position + Vector3.down * movementAmount;
-
+                            else
+                                selectedObj.transform.position = selectedObj.transform.position + Vector3.down * movementAmount;
                             break;
 
                         case "RotateObject":
@@ -311,6 +316,35 @@ public class EventCatcherEditor : Editor
             }
         }
         GUILayout.EndHorizontal();
+        if (modeSelected== "MoveObstacle")
+        {
+            EditorGUILayout.LabelField("Move the Obstacle with WASD or the Arrow Keys");
+        }
+        if (modeSelected == "MoveObject")
+        {
+            EditorGUILayout.LabelField("Move the Object with WASD or the Arrow Keys");
+        }
+
+        if (modeSelected == "RotateObject")
+        {
+            EditorGUILayout.LabelField("Rotate the Object with A/D, or Left/Right Arrow keys.");
+        }
+
+        if (modeSelected == "ScaleObject")
+        {
+            EditorGUILayout.LabelField("Scale the Object with WASD or the Arrow keys.");
+        }
+
+        if (modeSelected == "RotateObstacle")
+        {
+            EditorGUILayout.LabelField("Rotate the Obstacle path with A/D or Left/Right Arrow keys.");
+        }
+
+        if (modeSelected == "MovePath")
+        {
+            EditorGUILayout.LabelField("Move the Obstacle's path with the A/D or Left/Right Arrow keys.");
+        }
+
 
         DetectAction();
         base.OnInspectorGUI();
